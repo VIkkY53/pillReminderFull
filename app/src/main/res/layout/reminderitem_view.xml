@@ -26,30 +26,33 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
-                android:layout_width="170dp"
+                android:layout_width="220dp"
+                android:layout_marginLeft="-50dp"
                 android:layout_height="match_parent"
                 android:paddingRight="10dp"
-                android:scaleY="1.2"
-                android:scaleX="1.2"
-                android:src="@mipmap/ic_launcher" />
+                android:id="@+id/image"
+                android:rotation="90"
+                android:src="@mipmap/ic_defaultpillimage" />
 
             <TextView
                 android:id="@+id/textView"
-                android:layout_width="81dp"
+                android:layout_width="208dp"
                 android:layout_height="44dp"
-                android:layout_marginStart="184dp"
+                android:layout_marginStart="160dp"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/montserrat"
                 android:text="text"
-                android:textAlignment="center"
-                android:textColor="#000" />
+                android:textColor="#000"
+                android:textSize="20dp" />
 
             <TextView
                 android:id="@+id/texttime"
-                android:layout_width="81dp"
+                android:layout_width="188dp"
                 android:layout_height="44dp"
-                android:layout_marginStart="500px"
+                android:layout_marginStart="160dp"
                 android:layout_marginTop="200px"
+                android:fontFamily="@font/montserrat"
                 android:text="texttime"
-                android:textAlignment="center"
                 android:textColor="#000" />
         </androidx.cardview.widget.CardView>
 

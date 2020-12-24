@@ -4,17 +4,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ListItemObject {
-    String name,imageId;
+    String name;
+    String imageId="";
     Integer count;
     boolean active;
-    ArrayList<Time> timings= new ArrayList<Time>();
+    Time time=new Time(0);
+    public Time getTime() {
+        return time;
+    }
+
+    public void setTime(long time) {
+        this.time.setTime(time);;
+    }
+
+
     public ListItemObject() {
         Time time=new Time(0);
         this.name ="pill";
-        this.imageId = " ";
+        this.imageId =" ";
         this.count = 0;
-        this.active =false ;
-        this.timings.add(0,time);
     }
     public String getName() {
         return name;
@@ -40,10 +48,6 @@ public class ListItemObject {
     public void setActive(boolean active) {
         this.active = active;
     }
-    public Time getTiming(Integer index) {
-        return timings.get(index);
+
     }
-    public void setTimings(Integer index,Time time) {
-        this.timings.set(index,time);
-    }
-}
+

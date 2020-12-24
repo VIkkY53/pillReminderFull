@@ -8,16 +8,26 @@
     >
 
 
-    <fragment
-        android:id="@+id/nav_host_fragment"
-        android:name="androidx.navigation.fragment.NavHostFragment"
+    <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
+        android:elevation="4dp"
+        android:layout_height="55dp"
+        android:theme="@style/AppTheme"
+        android:background="#fff"
+        app:titleTextColor="#000"
+        app:titleMarginStart="10dp"
+        android:id="@+id/toolbar_dashboard"
+
+        app:title="Medic"/>
+    />
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_marginTop="55dp"
+        android:id="@+id/fragment_container"
         android:layout_height="match_parent"
         android:layout_above="@id/nav_view"
+        />
 
-        android:layout_marginTop="3dp"
-        app:defaultNavHost="true"
-        app:navGraph="@navigation/mobile_navigation" />
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/nav_view"
         android:layout_width="match_parent"
@@ -25,5 +35,8 @@
         android:layout_alignParentBottom="true"
         android:layout_marginStart="0dp"
         android:layout_marginEnd="0dp"
+        app:itemTextColor="#000"
+        app:elevation="4dp"
+        app:itemIconTint="@drawable/nav_color"
         app:menu="@menu/bottom_nav_menu" />
 </RelativeLayout>

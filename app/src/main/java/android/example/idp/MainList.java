@@ -8,25 +8,27 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+
 import static android.content.Context.MODE_PRIVATE;
 
 public class MainList {
     ArrayList<ListItemObject> mainList;
-    ArrayList<ListItemObject> upcomingList;
     Integer SizeOfList=0;
     Context getContext;
     public MainList(Context context){
         this.getContext=context;
-        mainList=new ArrayList<>();
+        mainList=new ArrayList<ListItemObject>();
         getSize(context);
         for (int i=0;i<SizeOfList;i++){
             mainList.add(new ListItemObject());
         }
         loadMainList();
-        Time time=new Time(50);
+        Time time=new Time(0);
     }
     public void saveMainList(){
-        SharedPreferences sharedPreferences =getContext.getSharedPreferences("MainListName", MODE_PRIVATE);
+        SharedPreferences sharedPreferences =getContext.getSharedPreferences("MainListNameNew2", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         Gson gson = new Gson();
         String json = gson.toJson(this.mainList);
@@ -35,7 +37,7 @@ public class MainList {
         editor.apply();
     }
     public void loadMainList(){
-        SharedPreferences sharedPreferences = getContext.getSharedPreferences("MainListName", MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getContext.getSharedPreferences("MainListNameNew2", MODE_PRIVATE);
         Gson gson = new Gson();
         String json = sharedPreferences.getString("MainList", null);
         Type type = new TypeToken<ArrayList<ListItemObject>>() {}.getType();
@@ -49,8 +51,26 @@ public class MainList {
         SizeOfList=sharedPreferences.getInt("SizeOfList",0);
     }
     public ArrayList<ListItemObject> getUpcomingList(){
+        ArrayList<ListItemObject> UpcomingList=new ArrayList<ListItemObject>();
+        UpcomingList=this.mainList;
+        if (UpcomingList!=null){
+            Collections.sort(UpcomingList, new Comparator<ListItemObject>() {
+                @Override
+                public int compare(ListItemObject o1, ListItemObject o2) {
+                    long a=o1.getTime().getTime();
+                    long b=o2.getTime().getTime();
+                    if (a>b)
+                        return 1;
+                    else if(a<b)
+                        return -1;
+                    else
+                        return 0;
 
-        return upcomingList;
+                }
+            });
+            return UpcomingList;
+        }
+        return new ArrayList<ListItemObject>();
     }
 }
 
