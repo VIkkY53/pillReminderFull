@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.example.idp.ListItemDetailView;
+import android.example.idp.ListItemDialog;
 import android.example.idp.ListItemObject;
 import android.example.idp.MainList;
 import android.example.idp.ReminderObject;
@@ -40,6 +41,8 @@ import java.io.File;
 import java.lang.reflect.Type;
 import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -50,12 +53,12 @@ public class DashboardFragment extends Fragment {
     public  ArrayList<ListItemObject> MainList=new ArrayList<>();
     ViewGroup container;
     public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
+                             ViewGroup container, Bundle savedInstanceState){
         this.container=container;
+        //Toast.makeText(getContext(),"Restarted",Toast.LENGTH_SHORT).show();
         MainList.add(new ListItemObject());
         View view=inflater.inflate(R.layout.fragment_dashboard,container,false);
         return updateList(inflater,container,savedInstanceState);
-
     }
     public void addNewItem(){
         Intent intent=new Intent(getContext(),ListItemDetailView.class);
@@ -73,7 +76,6 @@ public class DashboardFragment extends Fragment {
             }
         });
         ListView listView = (ListView) view.findViewById(R.id.upcomingListView);
-        //create list.
         MainList mainList=new MainList(getContext());
         mainList.loadMainList();
         this.MainList=mainList.getMainList();
@@ -81,17 +83,32 @@ public class DashboardFragment extends Fragment {
         if (MainList==null){
             MainList=new ArrayList<ListItemObject>();
         }
-    //    MainList.set(1,null);
+        else {
+            Collections.sort(this.MainList, new Comparator<ListItemObject>() {
+                @Override
+                public int compare(ListItemObject o1, ListItemObject o2) {
+                    boolean a=o1.isActive();
+                    boolean b=o2.isActive();
+                    if (a==true && b==false)
+                        return -1;
+                    else if(a==false && b==true)
+                        return 1;
+                    else
+                        return 0;
+                }
+            });
+        }
         customAdapter adapter=new customAdapter(getContext(),0,MainList);
         listView.setAdapter(adapter);
         listView.setClickable(true);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                launchDetailItemView(position);
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                ListItemDialog listItemDialog=new ListItemDialog(MainList.get(position),position);
+                listItemDialog.show(getParentFragmentManager(),"Dialog");
+                return true;
             }
         });
-        Toast.makeText(getContext(),"Started",Toast.LENGTH_LONG).show();
         return view;
     }
     public void launchDetailItemView(Integer position){
@@ -101,7 +118,6 @@ public class DashboardFragment extends Fragment {
         startActivity(intent);
     }
     private class customAdapter extends ArrayAdapter<ListItemObject> {
-
         public customAdapter(@NonNull Context context, int resource, @NonNull List objects) {
             super(context, 0, objects);
         }
@@ -118,25 +134,23 @@ public class DashboardFragment extends Fragment {
             TextView textView1=view.findViewById(R.id.pill_time);
             textView.setText(currentObject.getName().toString());
             File file=new File(currentObject.getImageId());
-      /*     if (file.exists()){
-                BitmapFactory.Options options=new BitmapFactory.Options();
-                options.inJustDecodeBounds=true;
-                BitmapFactory.de
+            if (file.exists()){
                 Bitmap bitmap=BitmapFactory.decodeFile(currentObject.getImageId());
-                int h=(int) (bitmap.getHeight() * (200.0 / bitmap.getWidth()));
-                Bitmap lowBitmap=   Bitmap.createScaledBitmap(bitmap,200,h,true);
-                imageView.setImageBitmap(lowBitmap
-                );
-            } */
+                imageView.setImageBitmap(bitmap);
+            }
+            else {
+              imageView.setImageResource(R.mipmap.ic_defaultpillimage);
+            }
+            if(!currentObject.isActive()){
+                ImageView imageView1=(ImageView)view.findViewById(R.id.mylistitem_active);
+                imageView1.setImageResource(R.drawable.ic_inactive_check);
+            }
             textView1.setText("Time : "+currentObject.getTime().toString());
             return view;
         }
     }
-
     @Override
     public void onResume() {
-
         super.onResume();
-       // getFragmentManager().beginTransaction().replace(R.id.fragment_container,new DashboardFragment()).commit();
     }
 }

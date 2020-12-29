@@ -21,23 +21,24 @@ public class MainList {
         this.getContext=context;
         mainList=new ArrayList<ListItemObject>();
         getSize(context);
-        for (int i=0;i<SizeOfList;i++){
+        System.out.println("size is :"+SizeOfList);
+      /*for (int i=0;i<SizeOfList;i++){
             mainList.add(new ListItemObject());
-        }
+        }*/
         loadMainList();
         Time time=new Time(0);
     }
     public void saveMainList(){
-        SharedPreferences sharedPreferences =getContext.getSharedPreferences("MainListNameNew2", MODE_PRIVATE);
+        SharedPreferences sharedPreferences =getContext.getSharedPreferences("MainListNameNew8", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         Gson gson = new Gson();
         String json = gson.toJson(this.mainList);
         editor.putString("MainList", json);
-        editor.putInt("SizeOfList",SizeOfList);
+        editor.putInt("SizeOfList1",SizeOfList);
         editor.apply();
     }
     public void loadMainList(){
-        SharedPreferences sharedPreferences = getContext.getSharedPreferences("MainListNameNew2", MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getContext.getSharedPreferences("MainListNameNew8", MODE_PRIVATE);
         Gson gson = new Gson();
         String json = sharedPreferences.getString("MainList", null);
         Type type = new TypeToken<ArrayList<ListItemObject>>() {}.getType();
@@ -48,7 +49,10 @@ public class MainList {
     }
     public void getSize(Context context){
         SharedPreferences sharedPreferences = getContext.getSharedPreferences("MainListName", MODE_PRIVATE);
-        SizeOfList=sharedPreferences.getInt("SizeOfList",0);
+        this.SizeOfList=sharedPreferences.getInt("SizeOfList1",0);
+    }
+    public Integer getSizeOfList() {
+        return SizeOfList;
     }
     public ArrayList<ListItemObject> getUpcomingList(){
         ArrayList<ListItemObject> UpcomingList=new ArrayList<ListItemObject>();
@@ -65,7 +69,6 @@ public class MainList {
                         return -1;
                     else
                         return 0;
-
                 }
             });
             return UpcomingList;

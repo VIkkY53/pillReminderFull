@@ -2,7 +2,12 @@ package android.example.idp;
 
 import android.Manifest;
 import android.app.ActionBar;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.app.StatusBarManager;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.DatabaseErrorHandler;
 import android.example.idp.ui.dashboard.DashboardFragment;
@@ -14,6 +19,7 @@ import android.view.MenuItem;
 import android.widget.Toolbar;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.gson.Gson;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -28,10 +34,12 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
     ArrayList<ListItemObject> MainList;
     androidx.appcompat.widget.Toolbar toolbar;
+    BottomNavigationView navView;
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
         MainList=new ArrayList<ListItemObject>();
         toolbar=findViewById(R.id.toolbar_dashboard);
         setSupportActionBar(toolbar);
-        BottomNavigationView navView = findViewById(R.id.nav_view);
+        navView = findViewById(R.id.nav_view);
         navView.setOnNavigationItemSelectedListener(navListener);
         toolbar.setTitle("Upcoming Reminders");
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new HomeFragment()).commit();
@@ -48,7 +56,16 @@ public class MainActivity extends AppCompatActivity {
                 .PERMISSION_GRANTED){
             ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.CAMERA},100);
         }
-
+        SharedPreferences sharedPreferences = getSharedPreferences("firstRunVariable", MODE_PRIVATE);
+        boolean isFirstRun = sharedPreferences.getBoolean("isFirstRun", false);
+        if (isFirstRun){
+            sharedPreferences =getSharedPreferences("firstRunVariable", MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putBoolean("isFirstRun", true);
+            Calendar calendar = Calendar.getInstance();
+            long time1=((calendar.getTime().getHours()*60) + (calendar.getTime().getMinutes()))*60*1000;
+            ReminderMain reminderMain=new ReminderMain(this,86400000-time1,false);
+        }
     }
     private  BottomNavigationView.OnNavigationItemSelectedListener navListener= new BottomNavigationView.OnNavigationItemSelectedListener() {
         @Override
@@ -72,11 +89,28 @@ public class MainActivity extends AppCompatActivity {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,fragment).commit();
             return true;
         }
-
     };
-
     @Override
-    protected void onRestart() {
-        super.onRestart();
+    protected void onResume() {
+        super.onResume();
+        //   navView.setOnNavigationItemSelectedListener(navListener);
+        if (toolbar.getTitle() == "My List")
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new DashboardFragment()).commit();
+        else
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
+
+    }
+    public static void remindersMain(){
+
+    }
+    private void setReminder(long time,ListItemObject listItemObject) {
+        AlarmManager alarmManager=(AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent fullScreenIntent=new Intent(this,ReminderReceiver.class);
+        PendingIntent pendingIntent=PendingIntent.getBroadcast(this,1,fullScreenIntent,0);
+        Calendar c=Calendar.getInstance();
+        if (Build.VERSION.SDK_INT>=23)
+            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC,time,pendingIntent);
+        else
+            alarmManager.setExact(AlarmManager.RTC,time,pendingIntent);
     }
 }

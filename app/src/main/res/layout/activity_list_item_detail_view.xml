@@ -6,12 +6,16 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".ListItemDetailView">
-
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:hint="Pill name"
+        android:layout_marginTop="10dp"
+        android:hint="Medication Name"
         android:padding="10dp"
         android:id="@+id/pill_name"/>
     <EditText
@@ -37,27 +41,37 @@
         />
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="match_parent"
+        android:layout_width="300dp"
+        android:layout_gravity="center"
         android:layout_margin="10dp"
-        android:layout_height="300dp"
+        android:layout_height="250dp"
         android:background="@drawable/imageview_background"
         android:src="@drawable/ic_baseline_add_24"
         />
-      <Button
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_margin="10dp"
-          android:text="Set Time"
-          android:id="@+id/TimePicker"
-          android:background="@drawable/reminderitem_background"
-          />
-      <Button
-          android:layout_width="80pt"
-          android:id="@+id/save"
-          android:layout_height="wrap_content"
-          android:text="SAVE"
-          android:layout_gravity="center"
-          android:layout_margin="10dp"
-          android:background="@drawable/reminderitem_background"
-          />
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/pill_time"
+        android:text="SET TIME"
+/>
+    <Button
+        android:layout_width="80pt"
+        android:id="@+id/save"
+        android:layout_height="wrap_content"
+        android:text="SAVE"
+        android:layout_gravity="center"
+        android:layout_margin="10dp"
+        android:background="@drawable/reminderitem_background"
+        />
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="300dp"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:layout_height="250dp"
+            android:background="@drawable/imageview_background"
+            android:src="@drawable/ic_baseline_add_24"
+            />
+    </ScrollView>
+
 </LinearLayout>

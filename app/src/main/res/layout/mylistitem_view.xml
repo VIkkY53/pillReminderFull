@@ -49,5 +49,14 @@
         android:text="pill_count"
         android:textSize="15sp"
         android:layout_marginBottom="10dp"/>
-
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/mylistitem_active"
+        android:src="@drawable/ic_active_check"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="30dp"
+        android:elevation="10dp"
+        />
 </RelativeLayout>

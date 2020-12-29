@@ -41,8 +41,7 @@ public class HomeFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.fragment_home,container,false);
         RecyclerView recyclerView=(RecyclerView)view.findViewById(R.id.upcomingrecyclerview);
-        objects=new ArrayList<>();
-        objects=new MainList(getContext()).getUpcomingList();
+        this.objects= new MainList(getContext()).getUpcomingList();
         updatedList=new ArrayList<ListItemObject>();
         updatedList();
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false));
@@ -89,8 +88,12 @@ public class HomeFragment extends Fragment {
             File file=new File(current.getImageId());
             if (file.exists())
             imageView.setImageBitmap(BitmapFactory.decodeFile(current.getImageId()));
+            else {
+                imageView.setImageResource(R.mipmap.ic_defaultpillimage);
+            }
             textTime.setText("Reminder at " + current.getTime().toString());
         }
+
         @Override
         public void onClick(View v) {
             Toast.makeText(getContext(),"Clicked",Toast.LENGTH_SHORT).show();
@@ -105,7 +108,6 @@ public class HomeFragment extends Fragment {
         @Override
         public viewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             LayoutInflater inflater=LayoutInflater.from(getActivity());
-
             return new viewholder(inflater,parent,list);
         }
         @Override

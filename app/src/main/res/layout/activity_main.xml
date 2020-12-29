@@ -6,8 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
-
-
     <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
         android:elevation="4dp"
@@ -17,7 +15,6 @@
         app:titleTextColor="#000"
         app:titleMarginStart="10dp"
         android:id="@+id/toolbar_dashboard"
-
         app:title="Medic"/>
     />
     <FrameLayout
@@ -27,7 +24,6 @@
         android:layout_height="match_parent"
         android:layout_above="@id/nav_view"
         />
-
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/nav_view"
         android:layout_width="match_parent"
@@ -36,7 +32,7 @@
         android:layout_marginStart="0dp"
         android:layout_marginEnd="0dp"
         app:itemTextColor="#000"
-        app:elevation="4dp"
+        app:elevation="8dp"
         app:itemIconTint="@drawable/nav_color"
         app:menu="@menu/bottom_nav_menu" />
 </RelativeLayout>

@@ -14,10 +14,8 @@ public class ListItemObject {
     }
 
     public void setTime(long time) {
-        this.time.setTime(time);;
+        this.time.setTime(time);
     }
-
-
     public ListItemObject() {
         Time time=new Time(0);
         this.name ="pill";
